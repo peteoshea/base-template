@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# update: Update application to run for its current checkout.
+#
+
+# Drop out if one of the commands fails
+set -e
+
+# Ensure we are working from the top of the project
+cd "$(dirname "$0")/.."
+
+# Run bootstrap script to resolve dependencies
+script/bin/bootstrap
+
+# Run all database migrations to ensure everything is up to date.
+# echo "==> Updating db…"
+
+echo "==> App is now ready to go!"

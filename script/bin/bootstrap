@@ -1,0 +1,143 @@
+#!/bin/bash
+
+# bootstrap: Script to resolve all dependencies that the application requires to run.
+#
+
+# Drop out if one of the commands fails
+set -e
+
+# Ensure we are working from the top of the project
+cd "$(dirname "$0")/../.."
+
+# Install linux distro specific packages
+package_manager=unknown
+
+function install_apt_pkgs {
+  if [[ -f "apt-pkgs" ]]
+  then
+    echo "==> Installing apt packages…"
+    sudo apt update
+    sudo apt -y upgrade
+    sudo apt -y auto-remove
+
+    # We need word splitting to install multiple packages on a single line
+    # shellcheck disable=SC2046
+    sudo apt -y install $(< apt-pkgs)
+  fi
+}
+
+function install_yum_pkgs {
+  if [[ -f "yum-pkgs" ]]
+  then
+    echo "==> Installing yum packages…"
+    sudo yum update
+
+    # We need word splitting to install multiple packages on a single line
+    # shellcheck disable=SC2046
+    sudo yum -y install $(< yum-pkgs)
+  fi
+}
+
+function install_linux_packages {
+  case $package_manager in
+    apt)
+      install_apt_pkgs
+      ;;
+    yum)
+      install_yum_pkgs
+      ;;
+    *)
+      echo "Not sure which package manager this distro uses so cannot install packages"
+      ;;
+  esac
+}
+
+if [[ $(uname -s) = "Linux" ]]
+then
+  echo "This appears to be a Linux based system"
+
+  # shellcheck disable=SC1091
+  . /etc/os-release
+  
+  distro=$ID
+  echo "Current distro is: $distro"
+
+  case $distro in
+    centos | rhel | fedora)
+      package_manager=yum
+      ;;
+    ubuntu | debian)
+      package_manager=apt
+      ;;
+  esac
+  install_linux_packages
+fi
+
+# If Brewfile exists then make sure dependencies are all installed and up to date
+if [[ -f "Brewfile" ]]
+then
+  if command -v brew > /dev/null
+  then
+    echo "Homebrew is installed"
+  else
+    echo "==> Installing Homebrew…"
+    curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash
+
+    if [[ $(uname -s) = "Linux" ]]
+    then
+      # Install recommended packages
+      case $package_manager in
+        apt)
+          sudo apt install build-essential
+          ;;
+        yum)
+          sudo yum groupinstall 'Development Tools'
+          ;;
+      esac
+
+      # Add Homebrew environment variables to current shell
+      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+      # Add Homebrew environment variables to local users profile
+      {
+        echo
+        echo "# Homebrew environment variables"
+        /home/linuxbrew/.linuxbrew/bin/brew shellenv
+      } >> "$HOME/.bashrc"
+    elif [[ $(uname -s) = "Darwin" ]]
+    then
+      echo "Not sure if anything needs to be done here on a Mac???"
+    fi
+
+    # Install gcc as recommended in the next steps
+    brew install gcc
+  fi
+
+  if brew bundle check > /dev/null 2>&1
+  then
+    echo "Homebrew dependencies are up to date"
+  else
+    echo "==> Installing Homebrew dependencies…"
+    brew bundle
+  fi
+fi
+
+# If package.json file exists then ensure Node.js is setup and run `npm install`
+if [[ -f "package.json" ]]
+then
+  echo "==> Installing nvm (node version manager)…"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+
+  # Add the following so nvm can be used within this script
+  export NVM_DIR="$HOME/.nvm"
+  # shellcheck source=/dev/null
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  # shellcheck source=/dev/null
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+  echo "==> Installing appropriate version of node…"
+  nvm install --lts
+
+  echo "==> Installing npm dependencies…"
+  npm install
+fi
