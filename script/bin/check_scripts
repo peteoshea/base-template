@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Check if arguments are passed allowing call to specific test(s).
+# As an example this calls a simple script to check these shell scripts are valid.
+if [[ -n $1 ]]
+then
+  echo "Lint specific scripts…"
+  for arg
+  do
+    echo "Checking: $arg"
+    shellcheck "$arg"
+  done
+else
+  echo "Lint all scripts…"
+  shellcheck script/bin/bootstrap
+  shellcheck script/bin/check_scripts
+  shellcheck script/setup
+  shellcheck script/test
+  shellcheck script/update
+fi

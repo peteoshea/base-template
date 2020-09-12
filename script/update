@@ -13,6 +13,10 @@ cd "$(dirname "$0")/.."
 script/bin/bootstrap
 
 # Run all database migrations to ensure everything is up to date.
+# echo
 # echo "==> Updating db…"
+# echo
 
+echo
 echo "==> App is now ready to go!"
+echo

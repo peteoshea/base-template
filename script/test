@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# test: Run test suite for project. Optionally run an individual test(s).
+#
+
+# Drop out if one of the commands fails
+set -e
+
+# Ensure we are working from the top of the project
+cd "$(dirname "$0")/.."
+
+echo "==> Running tests…"
+echo "Tests started at $(date "+%H:%M:%S")"
+
+# Check if arguments are passed allowing call to specific test(s).
+# As an example this calls a simple script to check these shell scripts are valid.
+if [[ -n $1 ]]
+then
+  script/bin/check_scripts "$@"
+else
+  script/bin/check_scripts
+fi
+
+echo "Tests finished at $(date "+%H:%M:%S")"

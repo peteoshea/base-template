@@ -20,14 +20,7 @@ This is typically run after an initial clone, or, to reset the project back to i
 ### [script/update][update]
 
 Used to update the project after a fresh pull.
-This should include any database migrations or any other things required to get the state of the
-app into shape for the current version that is checked out.
-
-### [script/update][update]
-
-Used to update the project after a fresh pull.
-This should include any database migrations or any other things required to get the state of the
-app into shape for the current version that is checked out.
+This should include any database migrations or any other things required to get the state of the app into shape for the current version that is checked out.
 
 ### [script/test][test]
 
@@ -38,8 +31,7 @@ A manual call to [update][update] before running the tests is usually a good ide
 A good pattern to support is having optional arguments that allow you to run specific tests.
 
 Linting is also be considered a form of testing.
-These tend to run faster than tests, so put them towards the beginning so it fails faster if
-there's a linting problem.
+These tend to run faster than tests, so put them towards the beginning so it fails faster if there's a linting problem.
 
 ## Installing Dependencies
 
@@ -48,15 +40,18 @@ is used solely for fulfilling dependencies of the project.
 This can mean installing packages, updating git submodules, etc.
 The goal is to make sure all required dependencies are installed.
 
-This script currently allows for following package managers:
+### PowerShell Package Managers
 
-### [Chocolatey](https://chocolatey.org/)
+The PowerShell scripts currently allow for following package managers:
+
+#### [Chocolatey](https://chocolatey.org/)
 
 If you have some [Chocolatey](https://chocolatey.org/) packages required then you can simply add a
 `chocolatey-packages` file at the top level of the project with a list of the packages and they
 will be installed and updated as required.
+Simply having the `chocolatey-packages` file means Chocolatey will be installed and updated.
 
-### [winget](https://github.com/microsoft/winget-cli)
+#### [winget](https://github.com/microsoft/winget-cli)
 
 Microsoft has recently released it's own package manager
 [winget](https://github.com/microsoft/winget-cli).
@@ -65,38 +60,27 @@ promising so if you want to use this to install some packages then you can simpl
 `winget-packages` file at the top level of the project with a list of the packages and they will be
 installed and updated as required.
 
-##  Windows Development
+### Bash Package Managers
 
-The following scripts will help you maintain your local development system.
-If you have any [Chocolatey](https://chocolatey.org/) or [winget](https://github.com/microsoft/winget-cli) packages required then you can simply add a `chocolatey-packages` or `winget-packages` file at the top level of the project with a list of the packages and they will be installed and updated as required.
+The bash scripts currently allow for following package managers:
 
-### [powershell/setup](powershell/setup.ps1)
+#### [APT](https://en.wikipedia.org/wiki/APT_(software))
 
-Used to set up a project in an initial state.
-This is typically run after an initial clone, or, to reset the project back to its initial state.
+If you are on a Debian based Linux system, like Ubuntu, then you can create an `apt-packages` file with a list of the required packages.
+You must ensure that this file has Linux line-endings (LF) otherwise it may not work as expected.
 
-### [powershell/update](powershell/update.ps1)
+#### [yum](https://en.wikipedia.org/wiki/Yum_(software))
 
-Used to update the project after a fresh pull.
-This should include any database migrations or any other things required to get the
-state of the app into shape for the current version that is checked out.
+If you are on a RedHat based Linux system, like CentOS or Fedora, then you can create an `yum-packages` file with a list of the required packages.
+You must ensure that this file has Linux line-endings (LF) otherwise it may not work as expected.
 
-##  Linux Development
+#### [Homebrew](https://brew.sh/)
 
-The following scripts are for use on a Linux based system, including MacOS or even Windows Subsystem for Linux.
-If you have any dependencies then you can add them to the appropriate file(s):
-- `Brewfile`
-- `apt-pkgs`
-- `yum-pkgs`
+You can use [Homebrew](https://brew.sh/) by creating a `Brewfile` at the top level of the project with a list of the packages to be installed.
+Simply having the `Brewfile` means Homebrew will be installed and updated.
 
-### [script/setup](script/setup)
-
-Used to set up a project in an initial state.
-This is typically run after an initial clone, or, to reset the project back to
-its initial state.
-
-### [script/update](script/update)
-
-Used to update the project after a fresh pull.
-This should include any database migrations or any other things required to get the
-state of the app into shape for the current version that is checked out.
+[bootstrap]: script/bin/bootstrap
+[ci.yml]: .github/wokflows/ci.yml
+[setup]: script/setup
+[test]: script/test
+[update]: script/update

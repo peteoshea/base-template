@@ -13,6 +13,10 @@ cd "$(dirname "$0")/.."
 script/bin/bootstrap
 
 # Reset database to a fresh state
+# echo
 # echo "==> Setting up DB…"
+# echo
 
+echo
 echo "==> App is now ready to go!"
+echo
