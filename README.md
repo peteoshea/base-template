@@ -11,22 +11,23 @@ For more details of these scripts check out the following projects:
 ## The Scripts
 
 The following is a list of scripts and their primary responsibilities.
+There are bash and PowerShell versions of these scripts and you can call the PowerShell versions with or with the `.ps1` suffix.
 
-### [script/setup][setup]
+### [script/setup][setup] / [script/setup.ps1][setup.ps1]
 
 Used to set up a project in an initial state.
 This is typically run after an initial clone, or, to reset the project back to its initial state.
 
-### [script/update][update]
+### [script/update][update] / [script/update.ps1][update.ps1]
 
 Used to update the project after a fresh pull.
 This should include any database migrations or any other things required to get the state of the app into shape for the current version that is checked out.
 
-### [script/test][test]
+### [script/test][test] / [script/test.ps1][test.ps1]
 
 Used to run the test suite of the project.
 To allow this script to be run from CI setup should be done outside of this script.
-A manual call to [update][update] before running the tests is usually a good idea.
+A manual call to [update][update]/[update.ps1][update.ps1] before running the tests is usually a good idea.
 
 A good pattern to support is having optional arguments that allow you to run specific tests.
 
@@ -35,7 +36,7 @@ These tend to run faster than tests, so put them towards the beginning so it fai
 
 ## Installing Dependencies
 
-The [bootstrap][bootstrap] script, called from both [setup][setup] and [update][update] scripts,
+The [bootstrap][bootstrap]/[bootstrap.ps1][bootstrap.ps1] script, called from both [setup][setup]/[setup.ps1][setup.ps1] and [update][update]/[update.ps1][update.ps1] scripts,
 is used solely for fulfilling dependencies of the project.
 This can mean installing packages, updating git submodules, etc.
 The goal is to make sure all required dependencies are installed.
@@ -80,7 +81,11 @@ You can use [Homebrew](https://brew.sh/) by creating a `Brewfile` at the top lev
 Simply having the `Brewfile` means Homebrew will be installed and updated.
 
 [bootstrap]: script/bin/bootstrap
+[bootstrap.ps1]: script/bin/bootstrap.ps1
 [ci.yml]: .github/wokflows/ci.yml
 [setup]: script/setup
+[setup.ps1]: script/setup.ps1
 [test]: script/test
+[test.ps1]: script/test.ps1
 [update]: script/update
+[update.ps1]: script/update.ps1
