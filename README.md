@@ -82,7 +82,6 @@ Simply having the `Brewfile` means Homebrew will be installed and updated.
 
 [bootstrap]: script/bin/bootstrap
 [bootstrap.ps1]: script/bin/bootstrap.ps1
-[ci.yml]: .github/wokflows/ci.yml
 [setup]: script/setup
 [setup.ps1]: script/setup.ps1
 [test]: script/test
