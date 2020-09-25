@@ -6,9 +6,6 @@
 # Drop out if one of the commands fails
 set -e
 
-# Ensure we are working from the top of the project
-cd "$(dirname "$0")/../.."
-
 # Common function to output important messages
 function output_message {
   message=$1
@@ -22,7 +19,11 @@ function output_message {
   echo "==> $message"
 }
 
-output_message "Running bootstrap script…"
+output_message "Bootstrapping dependencies…"
+
+# Ensure we are working from the top of the project
+cd "$(dirname "$0")/../.."
+echo "Change directory to: $(pwd)"
 
 # Install linux distro specific packages
 package_manager=unknown

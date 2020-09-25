@@ -6,8 +6,12 @@
 # Drop out if one of the commands fails
 set -e
 
+echo
+echo "==> Ensuring everything is up to date for this project…"
+
 # Ensure we are working from the top of the project
 cd "$(dirname "$0")/.."
+echo "Change directory to: $(pwd)"
 
 # Run bootstrap script to resolve dependencies
 script/bin/bootstrap
@@ -18,5 +22,5 @@ script/bin/bootstrap
 # echo
 
 echo
-echo "==> App is now ready to go!"
+echo "==> You are now ready to go!"
 echo

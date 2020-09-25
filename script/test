@@ -6,11 +6,12 @@
 # Drop out if one of the commands fails
 set -e
 
-# Ensure we are working from the top of the project
-cd "$(dirname "$0")/.."
-
 echo
 echo "==> Start running tests at $(date "+%H:%M:%S")"
+
+# Ensure we are working from the top of the project
+cd "$(dirname "$0")/.."
+echo "Change directory to: $(pwd)"
 
 # Check if arguments are passed allowing call to specific test(s).
 # As an example this calls a simple script to check these shell scripts are valid.
