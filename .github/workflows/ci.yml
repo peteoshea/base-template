@@ -6,13 +6,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Run the test bash script
+      - name: Run the bash test script
         run: script/test
 
-      - name: Install analyser
+      - name: Install powershell script analyser
         run: Install-Module -Name PSScriptAnalyzer -Force
         shell: pwsh
 
-      - name: Run the test powershell script
-        run: script/test
+      - name: Run the powershell test script
+        run: script/test.ps1
         shell: pwsh
