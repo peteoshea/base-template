@@ -1,5 +1,11 @@
 #!/bin/bash
 
+function check_script {
+  script=$1
+  echo "Checking: $script"
+  shellcheck "$script"
+}
+
 # Check if arguments are passed allowing call to specific test(s).
 # As an example this calls a simple script to check these shell scripts are valid.
 if [[ -n $1 ]]
@@ -8,13 +14,13 @@ then
   for arg
   do
     echo "Checking: $arg"
-    shellcheck "$arg"
+    check_script "$arg"
   done
 else
   echo "Lint all scripts…"
-  shellcheck script/bin/bootstrap
-  shellcheck script/bin/check_scripts
-  shellcheck script/setup
-  shellcheck script/test
-  shellcheck script/update
+  check_script script/bin/bootstrap
+  check_script script/bin/check_scripts
+  check_script script/setup
+  check_script script/test
+  check_script script/update
 fi
