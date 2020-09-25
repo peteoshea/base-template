@@ -49,7 +49,6 @@ function update_packages {
   packages_updated=true
 }
 
-# TODO remove abbreviation...
 function install_apt_packages {
   if [[ -f "apt-packages" ]]
   then
@@ -86,15 +85,31 @@ function install_linux_packages {
   esac
 }
 
+# Check whether this is Windows Subsystem for Linux
+is_wsl=false
+if uname -a | grep -q "icrosoft"
+then
+  is_wsl=true
+fi
+
+# Work out what type of OS we are running on
+is_linux=false
+is_mac=false
 if [[ $(uname -s) = "Linux" ]]
 then
   echo "This appears to be a Linux based system"
+  is_linux=true
 
   # shellcheck disable=SC1091
   . /etc/os-release
 
   distro=$ID
-  echo "Current distro is: $distro"
+  echo -n "Current distro is: $distro"
+  if [[ $is_wsl = true ]]
+  then
+    echo -n " (WSL)"
+  fi
+  echo
 
   case $distro in
     centos | rhel | fedora)
@@ -105,6 +120,13 @@ then
       ;;
   esac
   install_linux_packages
+elif [[ $(uname -s) = "Darwin" ]]
+then
+  echo "This appears to be a Mac"
+  is_mac=true
+else
+  echo "This script only runs on Linux or Mac systems"
+  exit 1
 fi
 
 # If Brewfile exists then make sure dependencies are all installed and up to date
@@ -117,7 +139,7 @@ then
     output_message "Installing Homebrew…"
     curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash
 
-    if [[ $(uname -s) = "Linux" ]]
+    if [[ $is_linux = true ]]
     then
       # Install recommended packages
       update_packages
@@ -139,7 +161,7 @@ then
         echo "# Homebrew environment variables"
         /home/linuxbrew/.linuxbrew/bin/brew shellenv
       } >> "$HOME/.bashrc"
-    elif [[ $(uname -s) = "Darwin" ]]
+    elif [[ $is_mac = true ]]
     then
       echo "TODO - automatic install of Homebrew on a Mac???"
     fi
