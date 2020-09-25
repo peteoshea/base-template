@@ -134,7 +134,8 @@ if [[ -f "Brewfile" ]]
 then
   if command -v brew > /dev/null
   then
-    echo "Homebrew is installed"
+    output_message "Updating Homebrew…"
+    brew update
   else
     output_message "Installing Homebrew…"
     curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash
