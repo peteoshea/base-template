@@ -34,6 +34,14 @@ A good pattern to support is having optional arguments that allow you to run spe
 Linting is also be considered a form of testing.
 These tend to run faster than tests, so put them towards the beginning so it fails faster if there's a linting problem.
 
+### [script/server][server] / [script/server.ps1][server.ps1]
+
+Used to start the application.
+
+For a web application, this might start up any extra processes that the application requires to run in addition to itself.
+
+[update][update]/[update.ps1][update.ps1] should be called ahead of any application booting to ensure that the application is up to date and can run appropriately.
+
 ## Installing Dependencies
 
 The [bootstrap][bootstrap]/[bootstrap.ps1][bootstrap.ps1] script, called from both [setup][setup]/[setup.ps1][setup.ps1] and [update][update]/[update.ps1][update.ps1] scripts,
@@ -82,6 +90,8 @@ Simply having the `Brewfile` means Homebrew will be installed and updated.
 
 [bootstrap]: script/bin/bootstrap
 [bootstrap.ps1]: script/bin/bootstrap.ps1
+[server]: script/server
+[server.ps1]: script/server.ps1
 [setup]: script/setup
 [setup.ps1]: script/setup.ps1
 [test]: script/test

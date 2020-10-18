@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# server: Launch the application and any extra required processes locally.
+#
+
+# Drop out if one of the commands fails
+set -e
+
+echo
+echo "==> Launch the application…"
+
+# Ensure we are working from the top of the project
+cd "$(dirname "$0")/.."
+echo "Change directory to: $(pwd)"
+
+# Run update script to ensure everything is up to date
+script/update
+
+# Start the server
+echo
+echo "==> Start the server…"
+echo "** Add commands to setup and then start your project here **"
