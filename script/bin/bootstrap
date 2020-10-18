@@ -51,7 +51,7 @@ function update_packages {
 }
 
 function install_apt_packages {
-  if [[ -f "apt-packages" ]]
+  if [[ -f apt-packages ]]
   then
     update_packages
     output_message "Installing apt packages…"
@@ -62,7 +62,7 @@ function install_apt_packages {
 }
 
 function install_yum_packages {
-  if [[ -f "yum-packages" ]]
+  if [[ -f yum-packages ]]
   then
     update_packages
     output_message "Installing yum packages…"
@@ -131,7 +131,7 @@ else
 fi
 
 # If Brewfile exists then make sure dependencies are all installed and up to date
-if [[ -f "Brewfile" ]]
+if [[ -f Brewfile ]]
 then
   if command -v brew > /dev/null
   then
