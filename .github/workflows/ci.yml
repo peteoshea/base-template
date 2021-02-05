@@ -4,12 +4,22 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout project source
+        uses: actions/checkout@v2
 
       - name: Run the bash test script
         run: script/test
 
+      - name: Cache PowerShell modules
+        id: cache-powershell-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.local/share/powershell/Modules
+          # Include a date as a manual cache buster if you want to install newer module versions
+          key: ${{runner.os}}-powershell-modules-2021-02-05
+
       - name: Install powershell script analyser
+        if: steps.cache-powershell-modules.outputs.cache-hit != 'true'
         run: Install-Module -Name PSScriptAnalyzer -Force
         shell: pwsh
 

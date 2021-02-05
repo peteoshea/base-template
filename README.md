@@ -40,7 +40,7 @@ Used to start the application.
 
 For a web application, this might start up any extra processes that the application requires to run in addition to itself.
 
-[update][update]/[update.ps1][update.ps1] should be called ahead of any application booting to ensure that the application is up to date and can run appropriately.
+The [update][update]/[update.ps1][update.ps1] script is called ahead of any application booting to ensure that the application is up to date and can run appropriately.
 
 ## Installing Dependencies
 
