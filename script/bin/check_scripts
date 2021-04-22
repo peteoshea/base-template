@@ -26,12 +26,14 @@ else
   cd "$(dirname "$0")/../.." || exit
   echo "Change directory to: $(pwd)"
 
-  # Find all regular files, excluding the .git folder, that contain shebang as shell script then
+  # Find all regular files, excluding certain folders, that contain shebang as shell script then
   # redirect that list into a while loop to process each one individually.
   while read -r -d '' script_file
   do
     check_script "${script_file}"
-  done < <(find . -type f ! -path './.git/*' \
+  done < <(find . \
+    -path './.git' -prune -o \
+    -type f \
     -exec grep -qE '^#!(.*\/|.*\/env +)(sh|bash|ksh)' {} \; -print0)
 fi
 
