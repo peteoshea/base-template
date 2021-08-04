@@ -139,7 +139,7 @@ then
     brew update
   else
     output_message "Installing Homebrew…"
-    curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash
+    bash <(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)
 
     if [[ $is_linux = true ]]
     then
