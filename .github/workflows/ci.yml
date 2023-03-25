@@ -16,7 +16,7 @@ jobs:
         with:
           path: ~/.local/share/powershell/Modules
           # Include a date as a manual cache buster if you want to install newer module versions
-          key: ${{runner.os}}-powershell-modules-2021-02-05
+          key: ${{runner.os}}-powershell-modules-2023-03-25
 
       - name: Install powershell script analyser
         if: steps.cache-powershell-modules.outputs.cache-hit != 'true'
