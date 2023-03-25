@@ -5,14 +5,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.5.0
 
       - name: Run the bash test script
         run: script/test
 
       - name: Cache PowerShell modules
         id: cache-powershell-modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3.3.1
         with:
           path: ~/.local/share/powershell/Modules
           # Include a date as a manual cache buster if you want to install newer module versions
