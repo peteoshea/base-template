@@ -29,6 +29,22 @@ jobs:
         run: Install-Module -Name PSScriptAnalyzer -Force
         shell: pwsh
 
+      - name: Verify powershell script analyser is installed
+        run: |
+          $expected = "${{ steps.ps-version.outputs.version }}"
+          $module = Get-Module -ListAvailable -Name PSScriptAnalyzer | Sort-Object Version -Descending | Select-Object -First 1
+
+          if (-not $module) {
+            throw "PSScriptAnalyzer was not installed"
+          }
+
+          if ($module.Version.ToString() -ne $expected) {
+            throw "Expected PSScriptAnalyzer $expected but found $($module.Version)"
+          }
+
+          Write-Output "PSScriptAnalyzer installed: $($module.Version)"
+        shell: pwsh
+
       - name: Run the powershell test script
         run: script/test.ps1
         shell: pwsh

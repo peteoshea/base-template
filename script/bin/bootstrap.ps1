@@ -14,6 +14,9 @@ if (-not (Get-Command pwsh -ErrorAction SilentlyContinue)) {
 # Install PSScriptAnalyzer
 Write-Output "==> Installing PSScriptAnalyzer..."
 Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force
+if (-not (Get-Module -ListAvailable -Name PSScriptAnalyzer)) {
+  throw "PSScriptAnalyzer installation failed"
+}
 
 function Install-WinGetPackage {
   param (
