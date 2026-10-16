@@ -5,22 +5,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project source
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v7.0.1
 
       - name: Run the bash test script
         run: script/test
 
+      - name: Get latest PSScriptAnalyzer version
+        id: ps-version
+        run: |
+          $version = (Find-Module -Name PSScriptAnalyzer).Version
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+        shell: pwsh
+
       - name: Cache PowerShell modules
         id: cache-powershell-modules
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v6.1.0
         with:
           path: ~/.local/share/powershell/Modules
-          # Include a date as a manual cache buster if you want to install newer module versions
-          key: ${{runner.os}}-powershell-modules-2023-03-25
+          key: ${{ runner.os }}-powershell-modules-${{ steps.ps-version.outputs.version }}
 
       - name: Install powershell script analyser
         if: steps.cache-powershell-modules.outputs.cache-hit != 'true'
-        run: Install-Module -Name PSScriptAnalyzer -Force
+        run: Install-Module -Name PSScriptAnalyzer -RequiredVersion '${{ steps.ps-version.outputs.version }}' -Force
+        shell: pwsh
+
+      - name: Verify powershell script analyser is installed
+        run: |
+          $expected = "${{ steps.ps-version.outputs.version }}"
+          $module = Get-Module -ListAvailable -Name PSScriptAnalyzer | Sort-Object Version -Descending | Select-Object -First 1
+
+          if (-not $module) {
+            throw "PSScriptAnalyzer was not installed"
+          }
+
+          if ($module.Version.ToString() -ne $expected) {
+            throw "Expected PSScriptAnalyzer $expected but found $($module.Version)"
+          }
+
+          Write-Output "PSScriptAnalyzer installed: $($module.Version)"
         shell: pwsh
 
       - name: Run the powershell test script

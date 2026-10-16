@@ -51,23 +51,19 @@ The goal is to make sure all required dependencies are installed.
 
 ### PowerShell Package Managers
 
-The PowerShell scripts currently allow for following package managers:
-
-#### [Chocolatey](https://chocolatey.org/)
-
-If you have some [Chocolatey](https://chocolatey.org/) packages required then you can simply add a
-`chocolatey-packages` file at the top level of the project with a list of the packages and they
-will be installed and updated as required.
-Simply having the `chocolatey-packages` file means Chocolatey will be installed and updated.
+The PowerShell scripts use [winget](https://github.com/microsoft/winget-cli) for package management.
 
 #### [winget](https://github.com/microsoft/winget-cli)
 
-Microsoft has recently released it's own package manager
-[winget](https://github.com/microsoft/winget-cli).
-This is currently only a preview so some functionality may not be available yet but it sounds
-promising so if you want to use this to install some packages then you can simply add a
+Microsoft's package manager, [winget](https://github.com/microsoft/winget-cli), is used to install
+packages on Windows. If you have some packages required then you can simply add a
 `winget-packages` file at the top level of the project with a list of the packages and they will be
-installed and updated as required.
+installed as required.
+
+Note: To upgrade packages after initial installation, run `winget upgrade` separately.
+
+PowerShell modules such as PSScriptAnalyzer are installed via `Install-Module` and do not
+need to be listed in the `winget-packages` file.
 
 ### Bash Package Managers
 
