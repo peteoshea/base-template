@@ -5,16 +5,15 @@ $binPath = Split-Path -Path $PSCommandPath -Parent
 $scriptPath = Split-Path -Path $binPath -Parent
 $basePath = Split-Path -Path $scriptPath -Parent
 
-# Install anything that requires admin priviledges
-$packagesFilePath = "$basePath\chocolatey-packages"
-$chocolateyPackages = Test-Path -Path "$packagesFilePath" -PathType Leaf
-if ($chocolateyPackages) {
-  & "$binPath\admin.ps1"
-  if ($LastExitCode) {
-    Write-Output "Admin script failed with exit code: $LastExitCode"
-    Exit $LastExitCode
-  }
+# Ensure PowerShell is installed
+if (-not (Get-Command pwsh -ErrorAction SilentlyContinue)) {
+  Write-Output "==> Installing PowerShell..."
+  winget install Microsoft.PowerShell --exact
 }
+
+# Install PSScriptAnalyzer
+Write-Output "==> Installing PSScriptAnalyzer..."
+Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force
 
 function Install-WinGetPackage {
   param (
