@@ -26,7 +26,7 @@ jobs:
 
       - name: Install powershell script analyser
         if: steps.cache-powershell-modules.outputs.cache-hit != 'true'
-        run: Install-Module -Name PSScriptAnalyzer -Force
+        run: Install-Module -Name PSScriptAnalyzer -RequiredVersion '${{ steps.ps-version.outputs.version }}' -Force
         shell: pwsh
 
       - name: Verify powershell script analyser is installed
