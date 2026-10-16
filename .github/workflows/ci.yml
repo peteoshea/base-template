@@ -12,7 +12,9 @@ jobs:
 
       - name: Get latest PSScriptAnalyzer version
         id: ps-version
-        run: echo "version=$(Find-Module -Name PSScriptAnalyzer | Select-Object -ExpandProperty Version)" >> $GITHUB_OUTPUT
+        run: |
+          $version = (Find-Module -Name PSScriptAnalyzer).Version
+          echo "version=$version" >> $env:GITHUB_OUTPUT
         shell: pwsh
 
       - name: Cache PowerShell modules
