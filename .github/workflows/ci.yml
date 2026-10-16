@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project source
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v7.0.1
 
       - name: Run the bash test script
         run: script/test
